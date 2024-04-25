@@ -1,4 +1,4 @@
-import "./app.css";
+import "./App.css";
 import axios from "axios";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
@@ -46,20 +46,20 @@ function App() {
     try {
       const res = await axios.post("/login", { username, password });
       setUser(res.data);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error)
     }
   };
 
   const handleDelete = async (id) => {
-    setSuccess(false);
     setError(false);
+    setSuccess(false);
     try {
       await axiosJWT.delete("/users/" + id, {
         headers: { authorization: "Bearer " + user.accessToken },
       });
       setSuccess(true);
-    } catch (err) {
+    } catch (error) {
       setError(true);
     }
   };
@@ -104,9 +104,7 @@ function App() {
               placeholder="password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="submit" className="submitButton">
-              Login
-            </button>
+            <button type="submit" className="submitButton">Login</button>
           </form>
         </div>
       )}
@@ -115,3 +113,36 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+// const refreshToken = async () => {
+  //   try {
+  //     const res = await axios.post("/refresh", { token: user.refreshToken });
+  //     setUser({
+  //       ...user,
+  //       accessToken: res.data.accessToken,
+  //       refreshToken: res.data.refreshToken,
+  //     });
+  //     return res.data;
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // };
+
+  // axios.interceptors.request.use(
+  //   async (config) => {
+  //     let currentDate = new Date();
+  //     const decodedToken = jwt_decode(user.accessToken);
+  //     console.log(decodedToken);
+  //     if (decodedToken.exp * 1000 < currentDate.getTime()) {
+  //       const data = await refreshToken();
+  //       config.headers["authorization"] = "Bearer " + data.accessToken;
+  //     }
+  //     return config;
+  //   }, (err) => {
+  //     return Promise.reject(err);
+  //   }
+  // );
